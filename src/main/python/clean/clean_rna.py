@@ -33,3 +33,5 @@ def handle_rna_cols(df_data):
             F.col("RNA7") == "") & (F.col("RNA6") == ""),
         F.regexp_extract("Code", "^(?i)[W][0-9]{5}", 0)).otherwise(lit(""))
     )
+
+    return df_data

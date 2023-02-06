@@ -31,10 +31,7 @@ def handle_other_cols(df_data):
         .otherwise(when((F.trim(F.regexp_extract(code, regex_letters, 0)).startswith("DDCSPP")),F.trim(F.regexp_extract(code, regex_letters_numbers, 0)))
         .otherwise(when((F.trim(F.regexp_extract(code, regex_letters, 0)).startswith("HOTEL")),F.trim(F.regexp_extract(code, regex_letters_numbers, 0)))
         .otherwise(when((F.trim(F.regexp_extract(code, regex_letters, 0)).startswith("DDSV")),F.trim(F.regexp_extract(code, regex_letters_numbers, 0)))
-
-
         #.otherwise("N/A")
         ))))))))))
 
-
-main()
+    return df_data

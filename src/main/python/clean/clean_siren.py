@@ -1,10 +1,16 @@
 import csv
+import logging
 import os
 import sys
 from datetime import datetime
 
-from pyspark.sql.functions import col, when, lit
+import findspark
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col, when, lit, count, sum, desc
+from pyspark.sql.utils import AnalysisException
 from pyspark.sql import functions as F
+from datetime import datetime
+
 
 
 def handle_siren_cols(df_data):
@@ -39,3 +45,5 @@ def handle_siren_cols(df_data):
          & (F.col("SIRET10") == "") & (F.col("SIREN8") == "") & (F.col("SIREN7") == "") & (F.col("SIREN6") == "")),
         F.regexp_extract("Code", "^(\d{5})", 1)).otherwise(lit(""))
     )
+
+    return df_data

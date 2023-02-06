@@ -3,8 +3,10 @@ import os
 import sys
 from datetime import datetime
 
+import findspark
 from pyspark.sql.functions import col, when, lit
 from pyspark.sql import functions as F
+
 
 def handle_siret_cols(df_data):
     print("Debut traitement des SIRET")
@@ -31,3 +33,5 @@ def handle_siret_cols(df_data):
             ((F.col("SIRET") == "") & (F.col("SIRET13") == "") & (F.col("SIRET12") == "") & (F.col("SIRET11") == "")),
              F.regexp_extract("Code", "^(\d{10})", 1)).otherwise(lit(""))
             )
+
+    return df_data

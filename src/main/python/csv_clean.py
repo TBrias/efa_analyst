@@ -10,13 +10,20 @@ from pyspark.sql.functions import col, when, lit, count, sum, desc
 from pyspark.sql.utils import AnalysisException
 from pyspark.sql import functions as F
 from datetime import datetime
-import clean
+
+import clean.clean_siret
+import clean.clean_siren
+import clean.clean_rna
+import clean.clean_numa
+import clean.clean_others
+import clean.construct_code_cols
+import clean.construct_geo
 
 start_time = datetime.now()
 logging.basicConfig(level=logging.INFO)
 
 findspark.init("C:\\w\\source\\spark\\spark-3.3.0-bin-hadoop3")
-main_path = "C:\\w\\EthicsForAnimals"
+main_path = "C:\\w\\EthicsForAnimals\\src\\main\\resources\\"
 csv_in = "C:\\w\\EthicsForAnimals\\src\\main\\resources\\EFA_all.csv"
 csv_out = "C:\\w\\EthicsForAnimals\\src\\main\\tmp\\output_final_all.csv"
 csv_out_geo = "C:\\w\\EthicsForAnimals\\src\\main\\tmp\\output_final_geo_all.csv"
@@ -61,7 +68,7 @@ def extract_data():
 
     #SIRET
     df_data = clean.clean_siret.handle_siret_cols(df_data)
-
+    print(df_data.show())
     #SIREN
     df_data = clean.clean_siren.handle_siren_cols(df_data)
 
@@ -88,7 +95,7 @@ def write_geo (df_data):
     
     df_geo = df_data.select("Code_final", "Code_present", "CP", "Ville")
 
-    df_geo.write.option("header",True).mode("overwrite").csv(csv_out_geo)
+    df_geo.coalesce(1).write.option("header",True).mode("overwrite").csv(csv_out_geo)
 
 
 def write_full_df (df_data):
@@ -97,7 +104,7 @@ def write_full_df (df_data):
     df_data =  df_data.withColumn("Type_code", (F.regexp_extract("Code", "(^[A-Za-z]*)", 0)))
     #df_data = df_data.groupBy("Type_code").agg(count("Code_final").alias("count_code")).orderBy(desc("count_code"))
 
-    df_data.coalesce(1).write.option("header",True).mode("overwrite").csv("C:\w\EthicsForAnimals\all_type_code")
+    df_data.coalesce(1).write.option("header",True).mode("overwrite").csv(csv_out)
 
 
 main()

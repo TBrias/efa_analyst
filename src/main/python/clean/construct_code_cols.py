@@ -72,3 +72,5 @@ def construct_cols(df_data):
      .when((F.trim(F.regexp_extract("Code", regex_letters, 0)).startswith("HOTEL")),F.trim(F.regexp_extract("Code", regex_letters_numbers, 0)))
      .when((F.trim(F.regexp_extract("Code", regex_letters, 0)).startswith("DDSV")),F.trim(F.regexp_extract("Code", regex_letters_numbers, 0)))
      .otherwise("N/A"))
+
+    return df_data

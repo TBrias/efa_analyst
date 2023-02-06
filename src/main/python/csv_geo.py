@@ -18,10 +18,10 @@ logging.basicConfig(level=logging.INFO)
 
 findspark.init("C:\\w\\source\\spark\\spark-3.3.0-bin-hadoop3")
 main_path = "C:\\w\\EthicsForAnimals"
-csv_france = "C:\w\EthicsForAnimals\geo\communes-departement-region.csv"
-csv_geo = "C:\w\EthicsForAnimals\geo\output_final_geo_all.csv"
-csv_out = "C:\w\EthicsForAnimals\geo\output_join_geo_all.csv"
-csv_join = "C:\w\EthicsForAnimals\geo\geo_join_all.csv"
+csv_france = "C:\\w\\EthicsForAnimals\\src\\main\\resources\\geo\\communes-departement-region.csv"
+csv_efa_geo = "C:\\w\\EthicsForAnimals\\src\\main\\resources\\geo\\output_final_geo_all.csv"
+csv_out = "C:\\w\\EthicsForAnimals\\src\\main\\resources\\geo\\output_join_geo_all.csv"
+csv_join = "C:\\w\\EthicsForAnimals\\src\\main\\resources\\geo\\geo_join_all.csv"
 
 spark_session = (
     SparkSession.builder
@@ -36,7 +36,7 @@ spark_session = (
 def main ():
     logging.info("Starting ETL job")
     # Extract
-    df_extacted_data = extract_data()
+    extract_data()
 
     end_time = datetime.now()
     print('Done: {}'.format(end_time))
@@ -46,7 +46,7 @@ def main ():
 def extract_data():
 
     try:
-        df_geo = spark_session.read.option("header", True).csv(os.path.join(main_path, csv_geo))
+        df_geo = spark_session.read.option("header", True).csv(os.path.join(main_path, csv_efa_geo))
         df_france = spark_session.read.option("header", True).csv(os.path.join(main_path, csv_france))
     except AnalysisException:
         logging.error(

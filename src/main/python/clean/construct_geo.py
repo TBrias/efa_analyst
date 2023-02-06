@@ -44,3 +44,5 @@ def construct_geo_df(df_data):
             )
         )
     )))
+
+    return df_data

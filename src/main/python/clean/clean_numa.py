@@ -17,3 +17,5 @@ def handle_numa_cols(df_data):
         F.col("NUMAGRIT") == "",
         F.regexp_extract("Code", "^((?i)[A]\d{9})", 0)).otherwise(lit(""))
     )
+
+    return df_data
