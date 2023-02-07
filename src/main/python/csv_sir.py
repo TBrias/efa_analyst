@@ -19,7 +19,7 @@ logging.basicConfig(level=logging.INFO)
 findspark.init("C:\\w\\source\\spark\\spark-3.3.0-bin-hadoop3")
 resources_path = "C:\\w\\EthicsForAnimals\\src\\main\\resources\\code_bdd\\"
 tmp_path = "C:\\w\\EthicsForAnimals\\src\\main\\tmp\\"
-csv_rna = "C:\\w\\EthicsForAnimals\\src\\main\\resources\\code_bdd\\rna_waldec_20230201"
+csv_sir = "C:\\w\\EthicsForAnimals\\src\\main\\resources\\code_bdd\\StockEtablissementHistorique_utf8\\StockEtablissementHistorique_utf8.csv"
 csv_efa_all = "C:\\w\\EthicsForAnimals\\src\\main\\tmp\\output_final_all.csv"
 csv_out = "C:\\w\\EthicsForAnimals\\src\\main\\tmp\\output_rna.csv"
 
@@ -62,21 +62,20 @@ def extract_data():
         F.upper(df_efa_all_filtered.Code_final.cast('String')) == F.upper(df_rna.id), 
         "left")
 
-    print(f"df_efa_all_filtered.count {df_efa_all_filtered.count()}")
-    #print(f"df_join.count {df_join.count()}")
+
 
     df_join = df_join.select("Code_final", "Code_present", "CP", "Ville", "date_disso", "adrs_codepostal", "adrs_libcommune", 
     "adrg_complemid", "adrg_complemgeo", "adrg_libvoie", "adrg_distrib")
 
-    #print(f"df_efa_all_filtered.count {df_efa_all_filtered.count()}")
-    print(f"df_join all.count {df_join.count()}")
+    print(f"df_efa_all_filtered.count {df_efa_all_filtered.count()}")
+    print(f"df_join.count {df_join.count()}")
 
-    df_empty_lines = df_join.filter(F.col("date_disso").isNull())
-    print(f"df_join empty.count {df_empty_lines.count()}")
-
+    df_empty_lines = df_join.filter(F.col("date_disso").isNotNull)
+    print(f"df_join.count {df_empty_lines.count()}")
 
     #df_join.show(10, False)
     
+    #df_dep = df_join.groupBy("nom_departement").agg(count("Code_final").alias("count_code")).orderBy(desc("count_code"))
     #df_dep.show(30, False)
     df_join.coalesce(1).write.option("header",True).mode("overwrite").csv(csv_out)
 
