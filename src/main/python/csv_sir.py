@@ -21,11 +21,11 @@ resources_path = "C:\\w\\EthicsForAnimals\\src\\main\\resources\\code_bdd\\"
 tmp_path = "C:\\w\\EthicsForAnimals\\src\\main\\tmp\\"
 csv_sir = "C:\\w\\EthicsForAnimals\\src\\main\\resources\\code_bdd\\StockEtablissementHistorique_utf8\\StockEtablissementHistorique_utf8.csv"
 csv_efa_all = "C:\\w\\EthicsForAnimals\\src\\main\\tmp\\output_final_all.csv"
-csv_out = "C:\\w\\EthicsForAnimals\\src\\main\\tmp\\output_rna.csv"
+csv_out = "C:\\w\\EthicsForAnimals\\src\\main\\tmp\\output_sir.csv"
 
 spark_session = (
     SparkSession.builder
-    .appName("Ethics For Animals csv construct GEO")
+    .appName("Ethics For Animals csv construct SIRET Join")
     .master("local[*]")
     .config("spark.executor.memory", "12G")
     .config("spark.driver.memory", "12G")
@@ -46,20 +46,20 @@ def main ():
 def extract_data():
 
     try:
-        df_rna = spark_session.read.option("header", True).csv(os.path.join(resources_path, csv_rna), sep=";")
+        df_sir = spark_session.read.option("header", True).csv(os.path.join(resources_path, csv_sir), sep=";")
         df_efa_all = spark_session.read.option("header", True).csv(os.path.join(tmp_path, csv_efa_all))
     except AnalysisException:
         logging.error(
             f"The file  does not exist or cannot be read")
 
 
-    df_efa_all_filtered = df_efa_all.filter(F.col("Code_present").startswith("RNA"))
+    df_efa_all_filtered = df_efa_all.filter(F.col("Code_present").startswith("SIR"))
 
     print(df_efa_all_filtered.show(3))
 
     df_join = df_efa_all_filtered.join(
-        df_rna,
-        F.upper(df_efa_all_filtered.Code_final.cast('String')) == F.upper(df_rna.id), 
+        df_sir,
+        F.upper(df_efa_all_filtered.Code_final.cast('String')) == F.upper(df_sir.id), 
         "left")
 
 

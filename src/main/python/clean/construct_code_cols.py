@@ -14,12 +14,12 @@ def construct_cols(df_data):
     regex_letters_numbers = "(^[A-Za-z]*[0-9]*)"
     
     df_data = df_data.withColumn('Code_present',
-     when((F.col("SIRET") != ""), "SIRET")
+     when((F.col("SIRET_tmp") != ""), "SIRET")
      .when((F.col("SIRET13") != ""), "SIRET13")
      .when((F.col("SIRET12") != ""), "SIRET12")
      .when((F.col("SIRET11") != ""), "SIRET11")
      .when((F.col("SIRET10") != ""), "SIRET10")
-     .when((F.col("SIREN") != ""), "SIREN")
+     .when((F.col("SIREN_tmp") != ""), "SIREN")
      .when((F.col("SIREN8") != ""), "SIREN8")
      .when((F.col("SIREN7") != ""), "SIREN7")
      .when((F.col("SIREN6") != ""), "SIREN6")
@@ -44,12 +44,12 @@ def construct_cols(df_data):
      .otherwise("N/A"))
 
     df_data = df_data.withColumn('Code_final',
-     when((F.col("SIRET") != ""), F.col("SIRET"))
+     when((F.col("SIRET_tmp") != ""), F.col("SIRET_tmp"))
      .when((F.col("SIRET13") != ""), F.col("SIRET13"))
      .when((F.col("SIRET12") != ""), F.col("SIRET12"))
      .when((F.col("SIRET11") != ""), F.col("SIRET11"))
      .when((F.col("SIRET10") != ""), F.col("SIRET10"))
-     .when((F.col("SIREN") != ""), F.col("SIREN"))
+     .when((F.col("SIREN_tmp") != ""), F.col("SIREN_tmp"))
      .when((F.col("SIREN8") != ""), F.col("SIREN8"))
      .when((F.col("SIREN7") != ""), F.col("SIREN7"))
      .when((F.col("SIREN6") != ""), F.col("SIREN6"))

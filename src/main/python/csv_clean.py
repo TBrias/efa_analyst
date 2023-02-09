@@ -101,7 +101,7 @@ def write_geo (df_data):
 def write_full_df (df_data):
     print('Starting: Writing full df')
     
-    df_data =  df_data.withColumn("Type_code", (F.regexp_extract("Code", "(^[A-Za-z]*)", 0)))
+    #df_data =  df_data.withColumn("Type_code", (F.regexp_extract("Code", "(^[A-Za-z]*)", 0)))
     #df_data = df_data.groupBy("Type_code").agg(count("Code_final").alias("count_code")).orderBy(desc("count_code"))
 
     df_data.coalesce(1).write.option("header",True).mode("overwrite").csv(csv_out)
