@@ -25,7 +25,7 @@ logging.basicConfig(level=logging.INFO)
 findspark.init("C:\\w\\source\\spark\\spark-3.3.0-bin-hadoop3")
 main_path = "C:\\w\\EthicsForAnimals\\src\\main\\resources\\"
 csv_in = "C:\\w\\EthicsForAnimals\\src\\main\\resources\\EFA_all.csv"
-csv_out = "C:\\w\\EthicsForAnimals\\src\\main\\tmp\\output_final_all.csv"
+csv_out = "C:\\w\\EthicsForAnimals\\src\\main\\tmp\\output_clean.csv"
 csv_out_geo = "C:\\w\\EthicsForAnimals\\src\\main\\tmp\\output_final_geo_all.csv"
 
 spark_session = (

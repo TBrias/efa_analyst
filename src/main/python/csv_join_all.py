@@ -22,7 +22,7 @@ tmp_path = "C:\\w\\EthicsForAnimals\\src\\main\\tmp\\"
 csv_rna = "C:\\w\\EthicsForAnimals\\src\\main\\resources\\code_bdd\\rna_waldec_20230201"
 csv_siret = "C:\\w\\EthicsForAnimals\\src\\main\\resources\\code_bdd\\StockEtablissement_utf8"
 csv_siren = "C:\\w\\EthicsForAnimals\\src\\main\\resources\\code_bdd\\StockUniteLegale_utf8"
-csv_efa_all = "C:\\w\\EthicsForAnimals\\src\\main\\tmp\\output_final_all.csv"
+csv_efa_all = "C:\\w\\EthicsForAnimals\\src\\main\\tmp\\output_clean.csv"
 csv_out = "C:\\w\\EthicsForAnimals\\src\\main\\tmp\\output_rna.csv"
 csv_out_all = "C:\\w\\EthicsForAnimals\\src\\main\\tmp\\output_join_all.csv"
 

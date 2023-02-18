@@ -19,7 +19,7 @@ def handle_other_cols(df_data):
     regex_letters = "(^[A-Za-z]*)"
     regex_letters_numbers = "(^[A-Za-z]*[0-9]*)"
     code = "Code"
-    type_access = "Type_access"
+    type_access = "Type_acces"
     
     df_data = df_data.withColumn('AUTRE_CODE', 
         when((F.trim(F.regexp_extract(code, regex_letters, 0)).startswith("MAI")),F.trim(F.regexp_extract(code, regex_letters_numbers, 0)))

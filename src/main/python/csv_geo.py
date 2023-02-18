@@ -21,7 +21,7 @@ main_path = "C:\\w\\EthicsForAnimals"
 csv_france = "C:\\w\\EthicsForAnimals\\src\\main\\resources\\geo\\communes-departement-region.csv"
 csv_efa_geo = "C:\\w\\EthicsForAnimals\\src\\main\\resources\\geo\\output_final_geo_all.csv"
 csv_out = "C:\\w\\EthicsForAnimals\\src\\main\\resources\\geo\\output_join_geo_all.csv"
-csv_join = "C:\\w\\EthicsForAnimals\\src\\main\\resources\\geo\\geo_join_all.csv"
+csv_in = "C:\\w\\EthicsForAnimals\\src\\main\\tmp\\output_clean.csv"
 
 spark_session = (
     SparkSession.builder
@@ -46,7 +46,8 @@ def main ():
 def extract_data():
 
     try:
-        df_geo = spark_session.read.option("header", True).csv(os.path.join(main_path, csv_efa_geo))
+        #df_geo = spark_session.read.option("header", True).csv(os.path.join(main_path, csv_efa_geo))
+        df_geo = spark_session.read.option("header", True).csv(os.path.join(main_path, csv_in))
         df_france = spark_session.read.option("header", True).csv(os.path.join(main_path, csv_france))
     except AnalysisException:
         logging.error(
@@ -68,7 +69,8 @@ def extract_data():
     
     df_dep = df_join.groupBy("nom_departement").agg(count("Code_final").alias("count_code")).orderBy(desc("count_code"))
     df_dep.show(30, False)
-    df_join.write.option("header",True).mode("overwrite").csv(csv_out)
+    print(df_dep.count())
+    df_join.coalesce(1).write.option("header",True).mode("overwrite").csv(csv_out)
 
     return df_join
 
