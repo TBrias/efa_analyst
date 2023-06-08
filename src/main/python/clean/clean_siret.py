@@ -4,14 +4,19 @@ import sys
 from datetime import datetime
 
 import findspark
-from pyspark.sql.functions import col, when, lit
+from pyspark.sql.functions import col, when, lit, length
 from pyspark.sql import functions as F
 
 
 def handle_siret_cols(df_data):
     print("Debut traitement des SIRET")
 
-    df_data = df_data.withColumn('SIRET_tmp', F.regexp_extract("Code", "^(\d{14})", 1)) 
+    #df_data = df_data.withColumn('SIRET_tmp', F.regexp_extract("Code", "^(\d{14})", 1)) 
+    df_data = df_data.withColumn('SIRET_tmp', when(length(F.trim(F.concat_ws("",F.expr(r"regexp_extract_all(Code, '[0-9]+', 0)")))) == 14,
+        F.substring(F.trim(F.concat_ws("",F.expr(r"regexp_extract_all(Code, '[0-9]+', 0)"))), 1, 14)).otherwise(lit(""))
+    )
+
+                        
 
 
     df_data = df_data.withColumn('SIRET13', when(

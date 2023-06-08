@@ -53,12 +53,18 @@ def extract_data():
         logging.error(
             f"The file {csv_in} does not exist or cannot be read")
 
+    #df_geo = df_geo.filter(col("CP").cast('float') == 62302)
+    #print(df_geo.show())
+    #df_france = df_france.filter(col("code_commune_INSEE").cast('float') == 62302)
+    #print(df_france.show())
 
-    df_france = df_france.dropDuplicates(["code_postal"])
+    df_france = df_france.dropDuplicates(["code_commune_INSEE"])
+    #df_dep3 = df_geo.groupBy("Code_present").agg(count("Code_final").alias("count_code")).orderBy(desc("count_code"))
+    #print(df_dep3.count())
 
     df_join = df_geo.join(
         df_france,
-        df_geo.CP.cast('float') == df_france.code_postal, 
+        df_geo.CP.cast('float') == df_france.code_commune_INSEE.cast('float'), 
         "left")
 
     print(df_join.count())
@@ -68,8 +74,10 @@ def extract_data():
     df_join.show(10, False)
     
     df_dep = df_join.groupBy("nom_departement").agg(count("Code_final").alias("count_code")).orderBy(desc("count_code"))
+    #df_dep2 = df_join.groupBy("Code_present").agg(count("Code_final").alias("count_code")).orderBy(desc("count_code"))
     df_dep.show(30, False)
     print(df_dep.count())
+    #print(df_dep2.count())
     df_join.coalesce(1).write.option("header",True).mode("overwrite").csv(csv_out)
 
     return df_join
